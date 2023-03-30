@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">BuyNLarge</string>
+    <string name="happiness_is_what_we_sell_that_s_why_everyone_loves_bnl">Happiness is what we sell!\nThat\'s why everyone loves BnL!</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="sign_in">Sign In</string>
+    <string name="create_new_account">Create New Account</string>
+    <string name="register">Register</string>
+</resources>
