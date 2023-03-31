@@ -1,7 +1,5 @@
 package com.example.buynlarge;
 
-import android.widget.EditText;
-
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -9,8 +7,8 @@ import com.example.buynlarge.DB.AppDataBase;
 
 import java.util.Date;
 
-@Entity(tableName = AppDataBase.BUYNLARGE_TABLE)
-public class BuyNLarge {
+@Entity(tableName = AppDataBase.USER_TABLE)
+public class User {
 
     @PrimaryKey(autoGenerate = true)
     private int mLogId;
@@ -18,7 +16,7 @@ public class BuyNLarge {
     private String mPassword;
     private Date mDate;
 
-    public BuyNLarge(String username, String password) {
+    public User(String username, String password) {
         mUsername = username;
         mPassword = password;
         mDate = new Date();
@@ -55,5 +53,13 @@ public class BuyNLarge {
 
     public void setPassword(String password) {
         mPassword = password;
+    }
+
+    public Date getDate() {
+        return mDate;
+    }
+
+    public void setDate(Date date) {
+        mDate = date;
     }
 }

@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.buynlarge.DB.AppDataBase;
-import com.example.buynlarge.DB.BuyNLargeDAO;
+import com.example.buynlarge.DB.UserDAO;
 import com.example.buynlarge.databinding.ActivityCreateNewAccountBinding;
 import com.example.buynlarge.databinding.ActivityMainBinding;
 
@@ -21,7 +21,7 @@ public class CreateNewAccount extends AppCompatActivity {
     EditText mNewUsername_edittext;
     EditText mNewPassword_edittext;
     Button mRegister_button;
-    BuyNLargeDAO mBuyNLargeDAO;
+    UserDAO mUserDAO;
 
 
 
@@ -38,7 +38,7 @@ public class CreateNewAccount extends AppCompatActivity {
         mNewUsername_edittext = mCreateBinding.newUsernameInput;
         mNewPassword_edittext = mCreateBinding.newPasswordInput;
         mRegister_button = mCreateBinding.newRegister;
-        mBuyNLargeDAO = Room.databaseBuilder(this, AppDataBase .class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().BuyNLargeDAO();
+        mUserDAO = Room.databaseBuilder(this, AppDataBase .class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().UserDAO();
 
         mRegister_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,8 +52,8 @@ public class CreateNewAccount extends AppCompatActivity {
         String username = mNewUsername_edittext.getText().toString();
         String password = mNewPassword_edittext.getText().toString();
 
-        BuyNLarge log = new BuyNLarge(username,password);
-        mBuyNLargeDAO.insert(log);
+        User log = new User(username,password);
+        mUserDAO.insert(log);
     }
 
     public static Intent getIntent(Context context){

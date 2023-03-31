@@ -1,7 +1,6 @@
 package com.example.buynlarge.DB;
 
 import androidx.room.TypeConverter;
-
 import java.util.Date;
 
 public class DateTypeConverter {

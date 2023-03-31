@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.buynlarge.DB.AppDataBase;
-import com.example.buynlarge.DB.BuyNLargeDAO;
+import com.example.buynlarge.DB.UserDAO;
 import com.example.buynlarge.databinding.ActivityMainBinding;
 
 import java.util.List;
@@ -25,9 +25,9 @@ public class MainActivity extends AppCompatActivity {
     EditText mPassword_edittext;
     Button mSignIn_button;
     TextView mCreateNewAccount_textview;
-    BuyNLargeDAO mBuyNLargeDAO;
+    UserDAO mUserDAO;
 
-    List<BuyNLarge> mBuyNLargeList;
+    List<User> mUserList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         mPassword_edittext = mMainBinding.passwordInput;
         mSignIn_button = mMainBinding.signInButton;
         mCreateNewAccount_textview = mMainBinding.createNewAccount;
-        mBuyNLargeDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().BuyNLargeDAO();
+        mUserDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().UserDAO();
 
         refreshDisplay();
 
@@ -66,10 +66,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void refreshDisplay(){
-        mBuyNLargeList = mBuyNLargeDAO.getBnlLogs();
-        if(! mBuyNLargeList.isEmpty()){
+        mUserList = mUserDAO.getBnlLogs();
+        if(! mUserList.isEmpty()){
             StringBuilder sb = new StringBuilder();
-            for(BuyNLarge log : mBuyNLargeList){
+            for(User log : mUserList){
                 sb.append(log.toString());
             }
             mMainDisplay_textview.setText(sb.toString());
