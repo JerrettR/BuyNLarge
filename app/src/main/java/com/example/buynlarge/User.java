@@ -11,7 +11,7 @@ import java.util.Date;
 public class User {
 
     @PrimaryKey(autoGenerate = true)
-    private int mLogId;
+    private int mUserId;
     private String mUsername;
     private String mPassword;
     private Date mDate;
@@ -24,19 +24,19 @@ public class User {
 
     @Override
     public String toString() {
-        return "Log #: " + mLogId + "\n" +
+        return "Log #: " + mUserId + "\n" +
                 "Username: " + mUsername + "\n" +
                 "Password: " + mPassword + "\n" +
                 "Date: " + mDate + "\n" +
                 "------------------------------\n";
     }
 
-    public int getLogId() {
-        return mLogId;
+    public int getUserId() {
+        return mUserId;
     }
 
-    public void setLogId(int logId) {
-        mLogId = logId;
+    public void setUserId(int userId) {
+        mUserId = userId;
     }
 
     public String getUsername() {

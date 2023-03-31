@@ -24,6 +24,6 @@ public interface UserDAO {
     @Query("SELECT * FROM " + AppDataBase.USER_TABLE)
     List<User> getBnlLogs();
 
-    @Query("SELECT * FROM " + AppDataBase.USER_TABLE + " WHERE mLogId = :logId")
-    List<User> getLogById(int logId);
+    @Query("SELECT * FROM " + AppDataBase.USER_TABLE + " WHERE mUserId = :userId")
+    List<User> getUserById(int userId);
 }
