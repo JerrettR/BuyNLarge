@@ -32,7 +32,7 @@
 
 
     <EditText
-        android:id="@+id/username_input"
+        android:id="@+id/new_username_input"
         android:layout_width="220dp"
         android:layout_height="55dp"
         android:gravity="center"
@@ -45,7 +45,7 @@
         app:layout_constraintVertical_bias="0.551" />
 
     <EditText
-        android:id="@+id/password_input"
+        android:id="@+id/new_password_input"
         android:layout_width="220dp"
         android:layout_height="55dp"
         android:layout_marginTop="52dp"
@@ -59,7 +59,7 @@
         app:layout_constraintVertical_bias="0.602" />
 
     <Button
-        android:id="@+id/register"
+        android:id="@+id/new_register"
         android:layout_width="220dp"
         android:layout_height="55dp"
         android:background="@color/red"
