@@ -19,15 +19,13 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    ActivityMainBinding mMainBinding;
-    TextView mMainDisplay_textview;
-    EditText mUsername_edittext;
-    EditText mPassword_edittext;
-    Button mSignIn_button;
-    TextView mCreateNewAccount_textview;
-    UserDAO mUserDAO;
-
-    List<User> mUserList;
+    private ActivityMainBinding mMainBinding;
+    private EditText mUsername_edittext;
+    private EditText mPassword_edittext;
+    private Button mSignIn_button;
+    private TextView mCreateNewAccount_textview;
+    private UserDAO mUserDAO;
+    private List<User> mUserList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +37,11 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(view);
 
-        mMainDisplay_textview = mMainBinding.mainDisplay;
         mUsername_edittext = mMainBinding.usernameInput;
         mPassword_edittext = mMainBinding.passwordInput;
         mSignIn_button = mMainBinding.signInButton;
         mCreateNewAccount_textview = mMainBinding.createNewAccount;
         mUserDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().UserDAO();
-
-        refreshDisplay();
 
         mSignIn_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,19 +58,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
-
-    private void refreshDisplay(){
-        mUserList = mUserDAO.getBnlLogs();
-        if(! mUserList.isEmpty()){
-            StringBuilder sb = new StringBuilder();
-            for(User log : mUserList){
-                sb.append(log.toString());
-            }
-            mMainDisplay_textview.setText(sb.toString());
-        }else{
-            mMainDisplay_textview.setText(R.string.no_logs_yet);
-        }
     }
 
     public static Intent getIntent(Context context){

@@ -18,10 +18,11 @@ import com.example.buynlarge.databinding.ActivityMainBinding;
 public class CreateNewAccount extends AppCompatActivity {
 
     ActivityCreateNewAccountBinding mCreateBinding;
-    EditText mNewUsername_edittext;
-    EditText mNewPassword_edittext;
-    Button mRegister_button;
-    UserDAO mUserDAO;
+    private EditText mNewUsername_edittext;
+    private EditText mNewPassword_edittext;
+    private Button mRegister_button;
+    private UserDAO mUserDAO;
+    private int mUserId = -1;
 
 
 
@@ -38,7 +39,7 @@ public class CreateNewAccount extends AppCompatActivity {
         mNewUsername_edittext = mCreateBinding.newUsernameInput;
         mNewPassword_edittext = mCreateBinding.newPasswordInput;
         mRegister_button = mCreateBinding.newRegister;
-        mUserDAO = Room.databaseBuilder(this, AppDataBase .class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().UserDAO();
+        mUserDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().UserDAO();
 
         mRegister_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,7 +53,7 @@ public class CreateNewAccount extends AppCompatActivity {
         String username = mNewUsername_edittext.getText().toString();
         String password = mNewPassword_edittext.getText().toString();
 
-        User log = new User(username,password);
+        User log = new User(mUserId,username,password);
         mUserDAO.insert(log);
     }
 

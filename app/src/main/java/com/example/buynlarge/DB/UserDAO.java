@@ -22,7 +22,7 @@ public interface UserDAO {
     void delete(User users);
 
     @Query("SELECT * FROM " + AppDataBase.USER_TABLE)
-    List<User> getBnlLogs();
+    List<User> getUserLogs();
 
     @Query("SELECT * FROM " + AppDataBase.USER_TABLE + " WHERE mUserId = :userId")
     List<User> getUserById(int userId);
