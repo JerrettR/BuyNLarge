@@ -19,11 +19,20 @@ public interface UserDAO {
     void update(User... users);
 
     @Delete
-    void delete(User users);
+    void delete(User user);
 
     @Query("SELECT * FROM " + AppDataBase.USER_TABLE)
     List<User> getUserLogs();
 
+//    @Query("SELECT * FROM " + AppDataBase.USER_TABLE + " WHERE mUserId = :userId ORDER BY mDate DESC")
+//    List<User> getUserById(int userId);
+
+    @Query("SELECT * FROM " + AppDataBase.USER_TABLE + " ORDER BY mDate DESC")
+    List<User> getAllUsers();
+
+    @Query("SELECT * FROM " + AppDataBase.USER_TABLE + " WHERE mUsername = :username")
+    User getUserByUsername(String username);
+
     @Query("SELECT * FROM " + AppDataBase.USER_TABLE + " WHERE mUserId = :userId")
-    List<User> getUserById(int userId);
+    List<User> getUserByUserId(int userId);
 }

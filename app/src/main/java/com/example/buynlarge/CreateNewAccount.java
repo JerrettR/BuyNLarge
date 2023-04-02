@@ -13,7 +13,7 @@ import android.widget.EditText;
 import com.example.buynlarge.DB.AppDataBase;
 import com.example.buynlarge.DB.UserDAO;
 import com.example.buynlarge.databinding.ActivityCreateNewAccountBinding;
-import com.example.buynlarge.databinding.ActivityMainBinding;
+import com.example.buynlarge.databinding.ActivityLoginBinding;
 
 public class CreateNewAccount extends AppCompatActivity {
 
@@ -53,7 +53,7 @@ public class CreateNewAccount extends AppCompatActivity {
         String username = mNewUsername_edittext.getText().toString();
         String password = mNewPassword_edittext.getText().toString();
 
-        User log = new User(mUserId,username,password);
+        User log = new User(username,password);
         mUserDAO.insert(log);
     }
 

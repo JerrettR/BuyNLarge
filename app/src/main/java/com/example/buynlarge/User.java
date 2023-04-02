@@ -16,8 +16,7 @@ public class User {
     private String mPassword;
     private Date mDate;
 
-    public User(int userId, String username, String password) {
-        mUserId = userId;
+    public User(String username, String password) {
         mUsername = username;
         mPassword = password;
         mDate = new Date();

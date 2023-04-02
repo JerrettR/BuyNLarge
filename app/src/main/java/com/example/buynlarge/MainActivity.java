@@ -5,11 +5,9 @@ import androidx.room.Room;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import com.example.buynlarge.DB.AppDataBase;
 import com.example.buynlarge.DB.UserDAO;
@@ -19,11 +17,10 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ActivityMainBinding mMainBinding;
-    private EditText mUsername_edittext;
-    private EditText mPassword_edittext;
-    private Button mSignIn_button;
-    private TextView mCreateNewAccount_textview;
+    private static final String USER_ID_KEY = "com.example.buynlarge.userIdKey";
+    private static final String PREFERENCES_KEY = "com.example.buynlarge.PREFERENCES_KEY";
+    ActivityMainBinding mMainBinding;
+    private int mUserId;
     private UserDAO mUserDAO;
     private List<User> mUserList;
 
@@ -37,31 +34,46 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(view);
 
-        mUsername_edittext = mMainBinding.usernameInput;
-        mPassword_edittext = mMainBinding.passwordInput;
-        mSignIn_button = mMainBinding.signInButton;
-        mCreateNewAccount_textview = mMainBinding.createNewAccount;
-        mUserDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().UserDAO();
+        getDatabase();
 
-        mSignIn_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String username_input = mUsername_edittext.getText().toString();
-                String password_input = mPassword_edittext.getText().toString();
-            }
-        });
-
-        mCreateNewAccount_textview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = CreateNewAccount.getIntent(getApplicationContext());
-                startActivity(intent);
-            }
-        });
+        checkForUser();
     }
 
-    public static Intent getIntent(Context context){
+    private void getDatabase(){
+        mUserDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().UserDAO();
+    }
+
+    private void checkForUser() {
+        //Do we have a user in the intent?
+        mUserId = getIntent().getIntExtra(USER_ID_KEY, -1);
+
+        //Do we have a user in the preferences?
+        if(mUserId != -1){
+            return;
+        }
+
+        SharedPreferences preferences = this.getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
+        mUserId = preferences.getInt(USER_ID_KEY, -1);
+
+        if(mUserId != -1){
+            return;
+        }
+
+        //Do we have any users at all?
+        List<User> users = mUserDAO.getAllUsers();
+        if(users.size() <= 0){
+            User defaultUser = new User("Rettro","password123");
+            mUserDAO.insert(defaultUser);
+        }
+
+        Intent intent = LoginActivity.getIntent(this);
+        startActivity(intent);
+    }
+
+    public static Intent getIntent(Context context, int userId){
         Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra(USER_ID_KEY, userId);
+        
         return intent;
     }
 }

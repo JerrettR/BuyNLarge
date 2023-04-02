@@ -8,78 +8,52 @@
 
     <ImageView
         android:id="@+id/BnLLogo"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="200dp"
-        app:layout_constraintBottom_toTopOf="@id/BnLSlogan"
+        android:layout_marginTop="11dp"
+        app:layout_constraintBottom_toTopOf="@id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.39"
         app:srcCompat="@drawable/bnl" />
 
     <TextView
-        android:id="@+id/BnLSlogan"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/happiness_is_what_we_sell_that_s_why_everyone_loves_bnl"
+        android:text="Welcome Username!"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.331" />
-
-
-    <EditText
-        android:id="@+id/username_input"
-        android:layout_width="220dp"
-        android:layout_height="55dp"
-        android:gravity="center"
-        android:hint="@string/username"
-        android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.551" />
-
-    <EditText
-        android:id="@+id/password_input"
-        android:layout_width="220dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="52dp"
-        android:gravity="center"
-        android:hint="@string/password"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.602" />
+        app:layout_constraintVertical_bias="0.303" />
 
     <Button
-        android:id="@+id/sign_in_button"
+        android:id="@+id/orders_button"
         android:layout_width="220dp"
         android:layout_height="55dp"
         android:background="@color/red"
         android:gravity="center"
-        android:text="@string/sign_in"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/orders"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.772" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <TextView
-        android:id="@+id/create_new_account"
+    <Button
+        android:id="@+id/search_button"
         android:layout_width="220dp"
         android:layout_height="55dp"
+        android:background="@color/red"
         android:gravity="center"
-        android:text="@string/create_new_account"
+        android:text="Search"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.894" />
+        app:layout_constraintVertical_bias="0.622" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
