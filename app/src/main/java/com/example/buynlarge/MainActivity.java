@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.buynlarge.DB.AppDataBase;
@@ -27,29 +28,38 @@ public class MainActivity extends AppCompatActivity {
     private static final String USER_ID_KEY = "com.example.buynlarge.userIdKey";
     private static final String PREFERENCES_KEY = "com.example.buynlarge.PREFERENCES_KEY";
     ActivityMainBinding mMainBinding;
-    private int mUserId;
+    private int mUserId = -1;
     private UserDAO mUserDAO;
     private List<User> mUserList;
     private SharedPreferences mPreferences = null;
     private User mUser;
+    private Button mAdmin_Button;
+    private Button mOrders_Button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         mMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = mMainBinding.getRoot();
-
         setContentView(view);
+
+        mAdmin_Button = mMainBinding.adminButton;
+        mOrders_Button = mMainBinding.ordersButton;
 
         getDatabase();
 
         checkForUser();
 
         addUserToPreference(mUserId);
+
         loginUser(mUserId);
 
+        if(mUser != null && mUser.isAdmin()){
+            mAdmin_Button.setVisibility(View.VISIBLE);
+        }else{
+            mAdmin_Button.setVisibility(View.GONE);
+        }
     }
 
     private void loginUser(int userId) {
@@ -119,9 +129,9 @@ public class MainActivity extends AppCompatActivity {
         //Do we have any users at all?
         List<User> users = mUserDAO.getAllUsers();
         if(users.size() <= 0){
-            User defaultUser = new User("Rettro","password123");
-            User altUser = new User("Jerrett","password123");
-            mUserDAO.insert(defaultUser,altUser);
+            User defaultUser = new User("testuser1","testuser1", false);
+            User admin = new User("admin2","admin2", true);
+            mUserDAO.insert(defaultUser,admin);
         }
 
         Intent intent = LoginActivity.getIntent(this);

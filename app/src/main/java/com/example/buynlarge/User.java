@@ -14,11 +14,13 @@ public class User {
     private int mUserId;
     private String mUsername;
     private String mPassword;
+    private boolean mIsAdmin;
     private Date mDate;
 
-    public User(String username, String password) {
+    public User(String username, String password, boolean isAdmin) {
         mUsername = username;
         mPassword = password;
+        mIsAdmin = isAdmin;
         mDate = new Date();
     }
 
@@ -29,6 +31,14 @@ public class User {
                 "Password: " + mPassword + "\n" +
                 "Date: " + mDate + "\n" +
                 "------------------------------\n";
+    }
+
+    public boolean isAdmin() {
+        return mIsAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        mIsAdmin = admin;
     }
 
     public int getUserId() {

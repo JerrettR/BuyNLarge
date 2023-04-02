@@ -11,5 +11,6 @@
     <string name="logout">Logout user?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="administrator_settings">Administrator Settings</string>
 
 </resources>

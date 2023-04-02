@@ -35,4 +35,7 @@ public interface UserDAO {
 
     @Query("SELECT * FROM " + AppDataBase.USER_TABLE + " WHERE mUserId = :userId")
     User getUserByUserId(int userId);
+
+    @Query("SELECT * FROM " + AppDataBase.USER_TABLE + " WHERE mIsAdmin = :isAdmin")
+    User getIsAdmin(int isAdmin);
 }

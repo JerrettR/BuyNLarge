@@ -52,8 +52,9 @@ public class CreateNewAccount extends AppCompatActivity {
     private void registerNewUser(){
         String username = mNewUsername_edittext.getText().toString();
         String password = mNewPassword_edittext.getText().toString();
+        boolean isAdmin = Boolean.parseBoolean(null);
 
-        User log = new User(username,password);
+        User log = new User(username,password,isAdmin);
         mUserDAO.insert(log);
     }
 
