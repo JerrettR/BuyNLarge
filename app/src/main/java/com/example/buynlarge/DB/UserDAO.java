@@ -7,6 +7,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 import com.example.buynlarge.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Dao
@@ -24,10 +25,10 @@ public interface UserDAO {
     @Query("SELECT * FROM " + AppDataBase.USER_TABLE)
     List<User> getUserLogs();
 
-//    @Query("SELECT * FROM " + AppDataBase.USER_TABLE + " WHERE mUserId = :userId ORDER BY mDate DESC")
-//    List<User> getUserById(int userId);
+    @Query("SELECT * FROM " + AppDataBase.USER_TABLE + " WHERE mUserId = :userId ORDER BY mDate DESC")
+    List<User> getUserById(int userId);
 
-    @Query("SELECT * FROM " + AppDataBase.USER_TABLE + " ORDER BY mDate DESC")
+    @Query("SELECT * FROM " + AppDataBase.USER_TABLE + " ORDER BY mUserId")
     List<User> getAllUsers();
 
     @Query("SELECT * FROM " + AppDataBase.USER_TABLE + " WHERE mUsername = :username")

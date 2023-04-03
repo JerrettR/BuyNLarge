@@ -44,19 +44,11 @@ public class LoginActivity extends AppCompatActivity {
         mPassword_edittext = mLoginBinding.passwordInput;
         mSignIn_button = mLoginBinding.signInButton;
         mCreateNewAccount_textview = mLoginBinding.createNewAccount;
-        mUserDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().UserDAO();
+        mUserDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().getUserDAO();
 
         wireUpDisplay();
 
         getDatabase();
-
-//        mSignIn_button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                String username_input = mUsername_edittext.getText().toString();
-//                String password_input = mPassword_edittext.getText().toString();
-//            }
-//        });
 
         mCreateNewAccount_textview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void getDatabase(){
-        mUserDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().UserDAO();
+        mUserDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().getUserDAO();
     }
 
     public static Intent getIntent(Context context){

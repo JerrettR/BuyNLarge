@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.buynlarge.DB.AppDataBase;
 import com.example.buynlarge.DB.UserDAO;
@@ -39,7 +40,7 @@ public class CreateNewAccount extends AppCompatActivity {
         mNewUsername_edittext = mCreateBinding.newUsernameInput;
         mNewPassword_edittext = mCreateBinding.newPasswordInput;
         mRegister_button = mCreateBinding.newRegister;
-        mUserDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().UserDAO();
+        mUserDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().getUserDAO();
 
         mRegister_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +57,9 @@ public class CreateNewAccount extends AppCompatActivity {
 
         User log = new User(username,password,isAdmin);
         mUserDAO.insert(log);
+        Toast.makeText(CreateNewAccount.this, "Account successfully created for: " + username, Toast.LENGTH_LONG).show();
+        Intent intent = LoginActivity.getIntent(getApplicationContext());
+        startActivity(intent);
     }
 
     public static Intent getIntent(Context context){

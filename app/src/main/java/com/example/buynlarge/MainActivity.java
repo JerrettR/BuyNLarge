@@ -60,6 +60,14 @@ public class MainActivity extends AppCompatActivity {
         }else{
             mAdmin_Button.setVisibility(View.GONE);
         }
+
+        mAdmin_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = AdminActivity.getIntent(getApplicationContext());
+                startActivity(intent);
+            }
+        });
     }
 
     private void loginUser(int userId) {
@@ -105,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getDatabase(){
-        mUserDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().UserDAO();
+        mUserDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().getUserDAO();
     }
 
     private void checkForUser() {

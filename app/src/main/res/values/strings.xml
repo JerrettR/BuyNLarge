@@ -12,5 +12,17 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="administrator_settings">Administrator Settings</string>
+    <string name="view_items">View Items</string>
+    <string name="view_users">View Users</string>
+
+    <string name="users_spinner_elements">dropDownMenuExample</string>
+    <string name="delete_user">Delete User</string>
+    <string-array name="users">
+        <item></item>
+        <item>C++</item>
+        <item>Java</item>
+        <item>JavaScript</item>
+        <item>VisualBasic</item>
+    </string-array>
 
 </resources>

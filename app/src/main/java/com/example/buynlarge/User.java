@@ -26,11 +26,10 @@ public class User {
 
     @Override
     public String toString() {
-        return "Log #: " + mUserId + "\n" +
+        return "User ID: " + mUserId + "\n" +
                 "Username: " + mUsername + "\n" +
                 "Password: " + mPassword + "\n" +
-                "Date: " + mDate + "\n" +
-                "------------------------------\n";
+                "_____________________________________________\n";
     }
 
     public boolean isAdmin() {
