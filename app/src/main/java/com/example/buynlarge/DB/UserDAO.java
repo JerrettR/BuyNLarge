@@ -6,8 +6,6 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 import com.example.buynlarge.User;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Dao

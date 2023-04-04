@@ -9,16 +9,18 @@ import androidx.room.TypeConverters;
 
 import com.example.buynlarge.User;
 
-@Database(entities = {User.class}, version = 3)
+@Database(entities = {User.class}, version = 4)
 @TypeConverters({DateTypeConverter.class})
 public abstract class AppDataBase extends RoomDatabase {
     public static final String DATABASE_NAME = "BUYNLARGE_DATABASE";
     public static final String USER_TABLE = "USER_TABLE";
+    public static final String ITEM_TABLE = "ITEM_TABLE";
 
     private static volatile AppDataBase instance;
     private static final Object LOCK = new Object();
 
     public abstract UserDAO getUserDAO();
+    public abstract ItemDAO getItemDAO();
 
     public static AppDataBase getInstance(Context context){
         if(instance == null){

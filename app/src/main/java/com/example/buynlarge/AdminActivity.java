@@ -30,6 +30,22 @@ public class AdminActivity extends AppCompatActivity {
         mViewUsers = mAdminBinding.viewUsersButton;
         mViewItems = mAdminBinding.viewItemsButton;
 
+        viewItems();
+
+        viewUsers();
+    }
+
+    private void viewItems(){
+        mViewItems.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = ItemsActivity.getIntent(getApplicationContext());
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void viewUsers(){
         mViewUsers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
