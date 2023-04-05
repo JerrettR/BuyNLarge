@@ -53,7 +53,7 @@ public class ItemsActivity extends AppCompatActivity {
 
         displayItemsSpinner();
 
-//        addItem();
+        newItem();
     }
 
     private void displayItems(){
@@ -102,15 +102,15 @@ public class ItemsActivity extends AppCompatActivity {
         }
     }
 
-//    public void addItem(){
-//        mAddItem_Button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = NewItemActivity.getIntent(getApplicationContext());
-//                startActivity(intent);
-//            }
-//        });
-//    }
+    public void newItem(){
+        mNewItem_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = NewItemActivity.getIntent(getApplicationContext());
+                startActivity(intent);
+            }
+        });
+    }
 
     public static Intent getIntent(Context context){
         Intent intent = new Intent(context, ItemsActivity.class);

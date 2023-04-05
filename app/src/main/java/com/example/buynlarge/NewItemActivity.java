@@ -37,21 +37,26 @@ public class NewItemActivity extends AppCompatActivity {
         mDescriptionInput = mNewItemBinding.descriptionInput;
         mAddItem_Button = mNewItemBinding.addItemButton;
 
-//        addNewItem();
+        addItem();
     }
 
-//    private void addNewItem(){
-//        String itemName = mItemNameInput.getText().toString();
-//        double price = Double.parseDouble(mPriceInput.getText().toString());
-//        int quantity = Integer.parseInt(mQtyInput.getText().toString());
-//        String description = mDescriptionInput.getText().toString();
-//
-//        Item newItem = new Item(itemName,price,quantity,description);
-//        mItemDAO.insert(newItem);
-//        Toast.makeText(NewItemActivity.this, "Item successfully created for: " + itemName, Toast.LENGTH_LONG).show();
-//        Intent intent = ItemsActivity.getIntent(getApplicationContext());
-//        startActivity(intent);
-//    }
+    private void addItem(){
+        mAddItem_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String itemName = mItemNameInput.getText().toString();
+                double price = Double.parseDouble(mPriceInput.getText().toString());
+                int quantity = Integer.parseInt(mQtyInput.getText().toString());
+                String description = mDescriptionInput.getText().toString();
+
+                Item newItem = new Item(itemName,price,quantity,description);
+                mItemDAO.insert(newItem);
+                Toast.makeText(NewItemActivity.this, "Item successfully created for: " + itemName, Toast.LENGTH_LONG).show();
+                Intent intent = ItemsActivity.getIntent(getApplicationContext());
+                startActivity(intent);
+            }
+        });
+    }
 
     public static Intent getIntent(Context context){
         Intent intent = new Intent(context, NewItemActivity.class);
