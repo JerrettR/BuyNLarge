@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.buynlarge.DB.AppDataBase;
+import com.example.buynlarge.DB.ItemDAO;
 import com.example.buynlarge.DB.UserDAO;
 import com.example.buynlarge.databinding.ActivityMainBinding;
 
@@ -26,11 +27,15 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final String USER_ID_KEY = "com.example.buynlarge.userIdKey";
+    private static final String ITEM_ID_KEY = "com.example.buynlarge.itemIdKey";
     private static final String PREFERENCES_KEY = "com.example.buynlarge.PREFERENCES_KEY";
     ActivityMainBinding mMainBinding;
     private int mUserId = -1;
     private UserDAO mUserDAO;
     private List<User> mUserList;
+    private int mItemId = -1;
+    private ItemDAO mItemDAO;
+    private List<Item> mItemList;
     private SharedPreferences mPreferences = null;
     private User mUser;
     private Button mAdmin_Button;
@@ -60,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
         }else{
             mAdmin_Button.setVisibility(View.GONE);
         }
+
+        checkForItems();
 
         mAdmin_Button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void getDatabase(){
         mUserDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().getUserDAO();
+        mItemDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().getItemDAO();
     }
 
     private void checkForUser() {
@@ -182,6 +190,37 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         alertBuilder.create().show();
+    }
+
+    private void checkForItems(){
+//        //Do we have a user in the intent?
+//        mItemId = getIntent().getIntExtra(ITEM_ID_KEY, -1);
+//
+//        //Do we have a user in the preferences?
+//        if(mItemId != -1){
+//            return;
+//        }
+//
+//        if(mPreferences == null) {
+//            getPrefs();
+//        }
+//        mItemId = mPreferences.getInt(ITEM_ID_KEY, -1);
+//
+//        if(mItemId != -1){
+//            return;
+//        }
+
+        List<Item> items = mItemDAO.getAllItems();
+        if(items.size() <= 0){
+            Item item1 = new Item("Wall-E",100.00, 1, "Cleans the earth during an apocalypse.");
+            Item item2 = new Item("Cheeseburger Shake",100.00, 1, "Your favorite meal, in a cup!");
+            Item item3 = new Item("Otto-Pilot Robot",100.00, 1, "Drives any spaceship autonomously, may lead a mutiny.");
+            Item item4 = new Item("Lightning McQueen Race Car",100.00, 1, "Ka-Chow!");
+            mItemDAO.insert(item1,item2,item3,item4);
+        }
+
+//        Intent intent = LoginActivity.getIntent(this);
+//        startActivity(intent);
     }
 
     public static Intent getIntent(Context context, int userId){

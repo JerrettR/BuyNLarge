@@ -7,9 +7,10 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
+import com.example.buynlarge.Item;
 import com.example.buynlarge.User;
 
-@Database(entities = {User.class}, version = 4)
+@Database(entities = {User.class,Item.class}, version = 4)
 @TypeConverters({DateTypeConverter.class})
 public abstract class AppDataBase extends RoomDatabase {
     public static final String DATABASE_NAME = "BUYNLARGE_DATABASE";

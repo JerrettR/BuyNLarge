@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.buynlarge.databinding.ActivityAdminBinding;
-import com.example.buynlarge.databinding.ActivityMainBinding;
 
 
 

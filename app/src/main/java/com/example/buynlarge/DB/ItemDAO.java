@@ -20,7 +20,7 @@ public interface ItemDAO {
     void update(Item... items);
 
     @Delete
-    void delete(Item items);
+    void delete(Item item);
 
     @Query("SELECT * FROM " + AppDataBase.ITEM_TABLE)
     List<Item> getItemLogs();
@@ -32,5 +32,5 @@ public interface ItemDAO {
     List<Item> getAllItems();
 
     @Query("SELECT * FROM " + AppDataBase.ITEM_TABLE + " WHERE mItemName = :itemName")
-    Item getUserByUsername(String itemName);
+    Item getItemByItemName(String itemName);
 }
