@@ -15,6 +15,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.buynlarge.DB.AppDataBase;
@@ -38,8 +40,10 @@ public class MainActivity extends AppCompatActivity {
     private List<Item> mItemList;
     private SharedPreferences mPreferences = null;
     private User mUser;
+    private TextView mWelcomeUser;
     private Button mAdmin_Button;
     private Button mOrders_Button;
+    private Button mShop_Button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +53,10 @@ public class MainActivity extends AppCompatActivity {
         View view = mMainBinding.getRoot();
         setContentView(view);
 
+        mWelcomeUser = mMainBinding.welcomeUserTextView;
         mAdmin_Button = mMainBinding.adminButton;
         mOrders_Button = mMainBinding.ordersButton;
+        mShop_Button = mMainBinding.shopButton;
 
         getDatabase();
 
@@ -60,22 +66,16 @@ public class MainActivity extends AppCompatActivity {
 
         loginUser(mUserId);
 
-        if(mUser != null && mUser.isAdmin()){
-            mAdmin_Button.setVisibility(View.VISIBLE);
-        }else{
-            mAdmin_Button.setVisibility(View.GONE);
-        }
+        hideAdminMenu();
 
         checkForItems();
 
-        mAdmin_Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = AdminActivity.getIntent(getApplicationContext());
-                startActivity(intent);
-            }
-        });
+        pressAdminButton();
+
+        displayWelcomeMessage();
     }
+
+
 
     private void loginUser(int userId) {
         mUser = mUserDAO.getUserByUserId(userId);
@@ -89,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
             MenuItem item = menu.findItem(R.id.logout_menu);
             item.setTitle(mUser.getUsername());
         }
-
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -166,6 +165,31 @@ public class MainActivity extends AppCompatActivity {
         addUserToPreference(-1);
     }
 
+    private void pressAdminButton(){
+        mAdmin_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = AdminActivity.getIntent(getApplicationContext());
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void displayWelcomeMessage(){
+        if(mUser != null) {
+            String welcomeMessage = getString(R.string.welcome_username, mUser.getUsername());
+            mWelcomeUser.setText(welcomeMessage);
+        }
+    }
+
+    private void hideAdminMenu(){
+        if(mUser != null && mUser.isAdmin()){
+            mAdmin_Button.setVisibility(View.VISIBLE);
+        }else{
+            mAdmin_Button.setVisibility(View.GONE);
+        }
+    }
+
     private void logoutUser(){
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
 
@@ -226,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
     public static Intent getIntent(Context context, int userId){
         Intent intent = new Intent(context, MainActivity.class);
         intent.putExtra(USER_ID_KEY, userId);
-        
+
         return intent;
     }
 }

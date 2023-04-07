@@ -14,7 +14,6 @@
     <string name="administrator_settings">Administrator Settings</string>
     <string name="view_items">View Items</string>
     <string name="view_users">View Users</string>
-
     <string name="users_spinner_elements">dropDownMenuExample</string>
     <string name="delete_user">Delete User</string>
     <string name="delete_item">Delete Item</string>
@@ -24,6 +23,7 @@
     <string name="quantity">Quantity</string>
     <string name="description">Description</string>
     <string name="new_item">New Item</string>
+    <string name="welcome_username">Welcome %s!</string>
     <string-array name="users">
         <item></item>
         <item>C++</item>
