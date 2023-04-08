@@ -78,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
 
         pressShopButton();
 
+        pressOrdersButton();
+
         displayWelcomeMessage();
     }
 
@@ -211,6 +213,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = ShopActivity.getIntent(getApplicationContext());
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void pressOrdersButton(){
+        mOrders_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = OrdersActivity.getIntent(getApplicationContext());
                 startActivity(intent);
             }
         });

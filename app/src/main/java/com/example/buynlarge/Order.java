@@ -16,13 +16,15 @@ public class Order {
     private String mItemName;
 
     public Order(String itemName) {
+        mOrderId = getOrderId();
         mItemName = itemName;
         mDate = new Date();
     }
 
     @Override
     public String toString() {
-        return "Item Name: " + mItemName + "\n" +
+        return "Order ID: " + mOrderId + "\n" +
+                "Item Name: " + mItemName + "\n" +
                 "Order Date: " + mDate + "\n" +
                 "___________________________________________\n";
     }
