@@ -26,7 +26,7 @@ public interface OrderDAO {
     List<Order> getOrderLogs();
 
     @Query("SELECT * FROM " + AppDataBase.ORDER_TABLE + " WHERE mOrderId = :orderId ORDER BY mOrderId")
-    List<Order> getOrderById(int orderId);
+    Order getOrderById(int orderId);
 
     @Query("SELECT * FROM " + AppDataBase.ORDER_TABLE + " ORDER BY mOrderId")
     List<Order> getAllOrders();

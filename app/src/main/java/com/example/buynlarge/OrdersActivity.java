@@ -81,17 +81,17 @@ public class OrdersActivity extends AppCompatActivity {
                     int orderId = Integer.parseInt(wordArray1[0].trim());
                     System.out.println("orderId: " + orderId);
                     Toast.makeText(parent.getContext(), "Selected: " + selectedOrder, Toast.LENGTH_LONG).show();
-//                    Order order = mOrderDAO.getOrderById(orderId);
+                    Order order = mOrderDAO.getOrderById(orderId);
 
-//                    mCancelOrder_Button.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            mOrderDAO.delete(order);
-//                            Toast.makeText(OrdersActivity.this, "Cancelled Order: " + selectedOrder, Toast.LENGTH_LONG).show();
-//                            Intent intent = OrdersActivity.getIntent(getApplicationContext());
-//                            startActivity(intent);
-//                        }
-//                    });
+                    mCancelOrder_Button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mOrderDAO.delete(order);
+                            Toast.makeText(OrdersActivity.this, "Cancelled Order: " + selectedOrder, Toast.LENGTH_LONG).show();
+                            Intent intent = OrdersActivity.getIntent(getApplicationContext());
+                            startActivity(intent);
+                        }
+                    });
                 }
 
                 @Override
