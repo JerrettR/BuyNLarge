@@ -30,7 +30,7 @@ public class Item {
                 "Price: " + mPrice + "\n" +
                 "Qty: " + mQuantity + "\n" +
                 "Description: " + mDescription + "\n" +
-                "_____________________________________________\n";
+                "___________________________________________\n";
     }
 
     public int getItemId() {

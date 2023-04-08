@@ -72,10 +72,10 @@ public class MainActivity extends AppCompatActivity {
 
         pressAdminButton();
 
+        pressShopButton();
+
         displayWelcomeMessage();
     }
-
-
 
     private void loginUser(int userId) {
         mUser = mUserDAO.getUserByUserId(userId);
@@ -116,6 +116,32 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void logoutUser(){
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+
+        alertBuilder.setMessage(R.string.logout);
+
+        alertBuilder.setPositiveButton(getString(R.string.yes),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        clearUserFromIntent();
+                        clearUserFromPref();
+                        mUserId = -1;
+                        checkForUser();
+                        Toast.makeText(MainActivity.this, "Successfully signed out", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        alertBuilder.setNegativeButton(getString(R.string.no),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(MainActivity.this, "Did not sign out", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        alertBuilder.create().show();
     }
 
     private void getDatabase(){
@@ -175,6 +201,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void pressShopButton(){
+        mShop_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = ShopActivity.getIntent(getApplicationContext());
+                startActivity(intent);
+            }
+        });
+    }
+
     private void displayWelcomeMessage(){
         if(mUser != null) {
             String welcomeMessage = getString(R.string.welcome_username, mUser.getUsername());
@@ -188,32 +224,6 @@ public class MainActivity extends AppCompatActivity {
         }else{
             mAdmin_Button.setVisibility(View.GONE);
         }
-    }
-
-    private void logoutUser(){
-        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
-
-        alertBuilder.setMessage(R.string.logout);
-
-        alertBuilder.setPositiveButton(getString(R.string.yes),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        clearUserFromIntent();
-                        clearUserFromPref();
-                        mUserId = -1;
-                        checkForUser();
-                        Toast.makeText(MainActivity.this, "Successfully signed out", Toast.LENGTH_SHORT).show();
-                    }
-                });
-        alertBuilder.setNegativeButton(getString(R.string.no),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(MainActivity.this, "Did not sign out", Toast.LENGTH_SHORT).show();
-                    }
-                });
-        alertBuilder.create().show();
     }
 
     private void checkForItems(){
