@@ -25,6 +25,7 @@
     <string name="new_item">New Item</string>
     <string name="welcome_username">Welcome %s!</string>
     <string name="buy">Buy</string>
+    <string name="cancel_order">Cancel Order</string>
     <string-array name="users">
         <item></item>
         <item>C++</item>

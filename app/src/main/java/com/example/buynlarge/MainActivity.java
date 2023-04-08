@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.buynlarge.DB.AppDataBase;
 import com.example.buynlarge.DB.ItemDAO;
+import com.example.buynlarge.DB.OrderDAO;
 import com.example.buynlarge.DB.UserDAO;
 import com.example.buynlarge.databinding.ActivityMainBinding;
 
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private int mItemId = -1;
     private ItemDAO mItemDAO;
     private List<Item> mItemList;
+    private OrderDAO mOrderDAO;
     private SharedPreferences mPreferences = null;
     private User mUser;
     private TextView mWelcomeUser;
@@ -69,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
         hideAdminMenu();
 
         checkForItems();
+
+        checkForOrders();
 
         pressAdminButton();
 
@@ -147,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
     private void getDatabase(){
         mUserDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().getUserDAO();
         mItemDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().getItemDAO();
+        mOrderDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().getOrderDAO();
     }
 
     private void checkForUser() {
@@ -227,23 +232,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkForItems(){
-//        //Do we have a user in the intent?
-//        mItemId = getIntent().getIntExtra(ITEM_ID_KEY, -1);
-//
-//        //Do we have a user in the preferences?
-//        if(mItemId != -1){
-//            return;
-//        }
-//
-//        if(mPreferences == null) {
-//            getPrefs();
-//        }
-//        mItemId = mPreferences.getInt(ITEM_ID_KEY, -1);
-//
-//        if(mItemId != -1){
-//            return;
-//        }
-
         List<Item> items = mItemDAO.getAllItems();
         if(items.size() <= 0){
             Item item1 = new Item("Wall-E",100.00, 1, "Cleans the earth during an apocalypse.");
@@ -252,9 +240,14 @@ public class MainActivity extends AppCompatActivity {
             Item item4 = new Item("Lightning McQueen Race Car",100.00, 1, "Ka-Chow!");
             mItemDAO.insert(item1,item2,item3,item4);
         }
+    }
 
-//        Intent intent = LoginActivity.getIntent(this);
-//        startActivity(intent);
+    private void checkForOrders(){
+        List<Order> orders = mOrderDAO.getAllOrders();
+        if(orders.size() <= 0){
+            Order order1 = new Order("Axiom Spaceship");
+            mOrderDAO.insert(order1);
+        }
     }
 
     public static Intent getIntent(Context context, int userId){
