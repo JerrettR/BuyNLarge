@@ -11,7 +11,7 @@ import com.example.buynlarge.Item;
 import com.example.buynlarge.Order;
 import com.example.buynlarge.User;
 
-@Database(entities = {User.class,Item.class, Order.class}, version = 5)
+@Database(entities = {User.class,Item.class, Order.class}, version = 7)
 @TypeConverters({DateTypeConverter.class})
 public abstract class AppDataBase extends RoomDatabase {
     public static final String DATABASE_NAME = "BUYNLARGE_DATABASE";

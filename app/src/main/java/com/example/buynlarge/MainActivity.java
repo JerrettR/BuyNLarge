@@ -257,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
     private void checkForOrders(){
         List<Order> orders = mOrderDAO.getAllOrders();
         if(orders.size() <= 0){
-            Order order1 = new Order("Axiom Spaceship");
+            Order order1 = new Order("Axiom Spaceship", 2000000.00);
             mOrderDAO.insert(order1);
         }
     }

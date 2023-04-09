@@ -14,10 +14,12 @@ public class Order {
     private int mOrderId;
     private Date mDate;
     private String mItemName;
+    private double mOrderTotal;
 
-    public Order(String itemName) {
+    public Order(String itemName, double orderTotal) {
         mOrderId = getOrderId();
         mItemName = itemName;
+        mOrderTotal = orderTotal;
         mDate = new Date();
     }
 
@@ -25,6 +27,7 @@ public class Order {
     public String toString() {
         return "Order ID: " + mOrderId + "\n" +
                 "Item Name: " + mItemName + "\n" +
+                "Total Price: $" + String.format("%,.2f", mOrderTotal) + "\n" +
                 "Order Date: " + mDate + "\n" +
                 "___________________________________________\n";
     }
@@ -51,5 +54,13 @@ public class Order {
 
     public void setItemName(String itemName) {
         mItemName = itemName;
+    }
+
+    public double getOrderTotal() {
+        return mOrderTotal;
+    }
+
+    public void setOrderTotal(double orderTotal) {
+        mOrderTotal = orderTotal;
     }
 }

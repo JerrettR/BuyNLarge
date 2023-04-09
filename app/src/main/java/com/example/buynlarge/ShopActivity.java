@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.buynlarge.DB.AppDataBase;
 import com.example.buynlarge.DB.ItemDAO;
 import com.example.buynlarge.DB.OrderDAO;
+import com.example.buynlarge.DB.UserDAO;
 import com.example.buynlarge.databinding.ActivityShopBinding;
 
 public class ShopActivity extends AppCompatActivity {
@@ -25,6 +26,7 @@ public class ShopActivity extends AppCompatActivity {
     private Button mBuy_Button;
     private ItemDAO mItemDAO;
     private OrderDAO mOrderDAO;
+    private UserDAO mUserDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,14 +37,13 @@ public class ShopActivity extends AppCompatActivity {
         setContentView(view);
         mItemDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().getItemDAO();
         mOrderDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().getOrderDAO();
+        mUserDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().getUserDAO();
 
         mShopSearch = mShopBinding.ShopSeachView;
         mSearchResults = mShopBinding.SearchResultsTextView;
         mBuy_Button = mShopBinding.BuyButton;
 
         setShopSearch();
-
-//        buyItem();
     }
 
     private void setShopSearch(){
@@ -52,13 +53,14 @@ public class ShopActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 Item item = mItemDAO.getItemByItemName(query);
                 mSearchResults.setText("Item Name: " + item.getItemName() + "\n" +
-                                       "Price: " + item.getPrice() + "\n" +
+                                       "Price: " + String.format("%,.2f",item.getPrice()) + "\n" +
                                        "Qty: " + item.getQuantity() + "\n" +
                                        "Description: " + item.getDescription());
 
                 String itemName = item.getItemName();
+                double itemTotal = item.getPrice();
                 if(item != null){
-                    buyItem(itemName);
+                    buyItem(itemName,itemTotal);
                 }
 
                 return false;
@@ -71,11 +73,11 @@ public class ShopActivity extends AppCompatActivity {
         });
     }
 
-    private void buyItem(String itemName){
+    private void buyItem(String itemName, double itemTotal){
         mBuy_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Order newOrder = new Order(itemName);
+                Order newOrder = new Order(itemName,itemTotal);
                 mOrderDAO.insert(newOrder);
                 Toast.makeText(ShopActivity.this, "Item ordered: " + itemName, Toast.LENGTH_LONG).show();
                 Intent intent = OrdersActivity.getIntent(getApplicationContext());
