@@ -23,9 +23,6 @@ public interface UserDAO {
     @Query("SELECT * FROM " + AppDataBase.USER_TABLE)
     List<User> getUserLogs();
 
-    @Query("SELECT * FROM " + AppDataBase.USER_TABLE + " WHERE mUserId = :userId ORDER BY mDate DESC")
-    List<User> getUserById(int userId);
-
     @Query("SELECT * FROM " + AppDataBase.USER_TABLE + " ORDER BY mUserId")
     List<User> getAllUsers();
 

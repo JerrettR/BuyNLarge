@@ -21,6 +21,8 @@ import com.example.buynlarge.DB.OrderDAO;
 import com.example.buynlarge.DB.UserDAO;
 import com.example.buynlarge.databinding.ActivityShopBinding;
 
+import java.util.List;
+
 public class ShopActivity extends AppCompatActivity {
 
     private static final String USER_ID_KEY = "com.example.buynlarge.userIdKey";
@@ -33,6 +35,7 @@ public class ShopActivity extends AppCompatActivity {
     private TextView mSearchResults;
     private Button mBuy_Button;
     private ImageButton mBackButton;
+    private List<Item> mItemNameList;
     private ItemDAO mItemDAO;
     private OrderDAO mOrderDAO;
     private UserDAO mUserDAO;
@@ -61,7 +64,7 @@ public class ShopActivity extends AppCompatActivity {
 
         loginUser(mUserId);
 
-        setShopSearch();
+        searchItems();
 
         pressBackButton();
     }
@@ -107,7 +110,20 @@ public class ShopActivity extends AppCompatActivity {
         invalidateOptionsMenu();
     }
 
-    private void setShopSearch(){
+    private void searchItems(){
+        mShopSearch.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
+            @Override
+            public boolean onSuggestionSelect(int position) {
+//                mItemNameList = mItemDAO.getAllItemNames();
+                return false;
+            }
+
+            @Override
+            public boolean onSuggestionClick(int position) {
+                return false;
+            }
+        });
+
         mShopSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -120,8 +136,10 @@ public class ShopActivity extends AppCompatActivity {
 
                 String itemName = item.getItemName();
                 double itemTotal = item.getPrice();
+                String username = mUser.getUsername();
+                System.out.println("username: " + username);
                 if(item != null){
-                    buyItem(item, itemName,itemTotal);
+                    buyItem(item,itemName,itemTotal,username);
                 }
                 return false;
             }
@@ -133,11 +151,11 @@ public class ShopActivity extends AppCompatActivity {
         });
     }
 
-    private void buyItem(Item item, String itemName, double itemTotal){
+    private void buyItem(Item item, String itemName, double itemTotal, String username){
         mBuy_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Order newOrder = new Order(itemName,itemTotal);
+                Order newOrder = new Order(itemName,itemTotal,username);
                 mOrderDAO.insert(newOrder);
                 Toast.makeText(ShopActivity.this, "Item ordered: " + itemName, Toast.LENGTH_LONG).show();
                 item.setQuantity(item.getQuantity()-1);

@@ -15,12 +15,14 @@ public class Order {
     private Date mDate;
     private String mItemName;
     private double mOrderTotal;
+    private String mUsername;
 
-    public Order(String itemName, double orderTotal) {
+    public Order(String itemName, double orderTotal, String username) {
         mOrderId = getOrderId();
         mItemName = itemName;
         mOrderTotal = orderTotal;
         mDate = new Date();
+        mUsername = username;
     }
 
     @Override
@@ -28,6 +30,7 @@ public class Order {
         return "Order ID: " + mOrderId + "\n" +
                 "Item Name: " + mItemName + "\n" +
                 "Total Price: $" + String.format("%,.2f", mOrderTotal) + "\n" +
+                "Ordered By: " + mUsername + "\n" +
                 "Order Date: " + mDate + "\n" +
                 "___________________________________________\n";
     }
@@ -62,5 +65,13 @@ public class Order {
 
     public void setOrderTotal(double orderTotal) {
         mOrderTotal = orderTotal;
+    }
+
+    public String getUsername() {
+        return mUsername;
+    }
+
+    public void setUsername(String username) {
+        mUsername = username;
     }
 }

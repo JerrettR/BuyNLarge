@@ -128,6 +128,12 @@ public class ItemsActivity extends AppCompatActivity {
 
     private void displayItemsSpinner(){
         mItemList = mItemDAO.getAllItems();
+        for(Item item : mItemList){
+            if(item.getQuantity() < 1){
+                mItemDAO.delete(item);
+                mItemList = mItemDAO.getAllItems();
+            }
+        }
         if(! mItemList.isEmpty()){
             ArrayAdapter<Item> adapter = new ArrayAdapter<Item>(this, android.R.layout.simple_expandable_list_item_1, mItemList);
             adapter.setDropDownViewResource(android.R.layout.simple_expandable_list_item_1);

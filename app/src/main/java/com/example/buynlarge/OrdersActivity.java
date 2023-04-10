@@ -115,12 +115,22 @@ public class OrdersActivity extends AppCompatActivity {
     }
 
     private void displayOrders(){
-        StringBuilder sb = new StringBuilder();
-        for(Order order : mOrderDAO.getAllOrders()){
-            sb.append(order);
+        String username = mUser.getUsername();
+        if(mUser.isAdmin()) {
+            StringBuilder sb = new StringBuilder();
+            for (Order order : mOrderDAO.getAllOrders()) {
+                sb.append(order);
+            }
+            mOrdersList_TextView.setText(sb);
+            mOrdersList_TextView.setMovementMethod(new ScrollingMovementMethod());
+        }else{
+            StringBuilder sb = new StringBuilder();
+            for (Order order : mOrderDAO.getUserOrdersByUsername(username)) {
+                sb.append(order);
+            }
+            mOrdersList_TextView.setText(sb);
+            mOrdersList_TextView.setMovementMethod(new ScrollingMovementMethod());
         }
-        mOrdersList_TextView.setText(sb);
-        mOrdersList_TextView.setMovementMethod(new ScrollingMovementMethod());
     }
 
     private void displayOrdersSpinner(){

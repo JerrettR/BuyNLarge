@@ -31,9 +31,12 @@ public interface OrderDAO {
     @Query("SELECT * FROM " + AppDataBase.ORDER_TABLE + " ORDER BY mOrderId")
     List<Order> getAllOrders();
 
+    @Query("SELECT * FROM " + AppDataBase.ORDER_TABLE + " WHERE mUsername = :username ORDER BY mOrderId")
+    List<Order> getAllOrdersByUsername(String username);
+
     @Query("SELECT * FROM " + AppDataBase.ORDER_TABLE + " WHERE mItemName = :itemName")
     List<Order> getOrdersByItemName(String itemName);
 
-//    @Query("SELECT mOrderId FROM " + AppDataBase.ORDER_TABLE + " WHERE mOrderId = :orderId ORDER BY mOrderId")
-//    Order getOrderId(int orderId);
+    @Query("SELECT * FROM " + AppDataBase.ORDER_TABLE + " WHERE mUsername = :username ORDER BY mOrderId")
+    List<Order> getUserOrdersByUsername(String username);
 }
