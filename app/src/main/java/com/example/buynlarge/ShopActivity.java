@@ -141,6 +141,7 @@ public class ShopActivity extends AppCompatActivity {
                 mOrderDAO.insert(newOrder);
                 Toast.makeText(ShopActivity.this, "Item ordered: " + itemName, Toast.LENGTH_LONG).show();
                 item.setQuantity(item.getQuantity()-1);
+                mItemDAO.update(item);
                 Intent intent = OrdersActivity.getIntent(getApplicationContext(), mUser.getUserId());
                 startActivity(intent);
             }
