@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 7,
-    "identityHash": "b737e5af22ad7aefb8a1b5ffbcd0cf87",
+    "version": 9,
+    "identityHash": "7190c2a3e1f0d75b77c1917d09284a29",
     "entities": [
       {
         "tableName": "USER_TABLE",
@@ -94,7 +94,7 @@
       },
       {
         "tableName": "ORDER_TABLE",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`mOrderId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `mDate` INTEGER, `mItemName` TEXT, `mOrderTotal` REAL NOT NULL, `mUser` TEXT, `user` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`mOrderId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `mDate` INTEGER, `mItemName` TEXT, `mOrderTotal` REAL NOT NULL, `mUsername` TEXT)",
         "fields": [
           {
             "fieldPath": "mOrderId",
@@ -121,14 +121,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "mUser",
-            "columnName": "mUser",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "user",
-            "columnName": "user",
+            "fieldPath": "mUsername",
+            "columnName": "mUsername",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -146,7 +140,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b737e5af22ad7aefb8a1b5ffbcd0cf87')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7190c2a3e1f0d75b77c1917d09284a29')"
     ]
   }
 }

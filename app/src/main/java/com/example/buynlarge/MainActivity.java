@@ -83,6 +83,55 @@ public class MainActivity extends AppCompatActivity {
         displayWelcomeMessage();
     }
 
+    private void getDatabase(){
+        mUserDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().getUserDAO();
+        mItemDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().getItemDAO();
+        mOrderDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().getOrderDAO();
+    }
+
+    private void checkForUser() {
+        //Do we have a user in the intent?
+        mUserId = getIntent().getIntExtra(USER_ID_KEY, -1);
+        System.out.println("mUserId: " + mUserId);
+
+        //Do we have a user in the preferences?
+        if(mUserId != -1){
+            return;
+        }
+
+        if(mPreferences == null) {
+            getPrefs();
+        }
+        mUserId = mPreferences.getInt(USER_ID_KEY, -1);
+
+        if(mUserId != -1){
+            return;
+        }
+
+        //Do we have any users at all?
+        List<User> users = mUserDAO.getAllUsers();
+        if(users.size() <= 0){
+            User defaultUser = new User("testuser1","testuser1", false);
+            User admin = new User("admin2","admin2", true);
+            mUserDAO.insert(defaultUser,admin);
+        }
+
+        Intent intent = LoginActivity.getIntent(this);
+        startActivity(intent);
+    }
+
+    private void addUserToPreference(int userId) {
+        if(mPreferences == null){
+            getPrefs();
+        }
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putInt(USER_ID_KEY, userId);
+    }
+
+    private void getPrefs() {
+        mPreferences = this.getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
+    }
+
     private void loginUser(int userId) {
         mUser = mUserDAO.getUserByUserId(userId);
 
@@ -96,14 +145,6 @@ public class MainActivity extends AppCompatActivity {
             item.setTitle(mUser.getUsername());
         }
         return super.onPrepareOptionsMenu(menu);
-    }
-
-    private void addUserToPreference(int userId) {
-        if(mPreferences == null){
-            getPrefs();
-        }
-        SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putInt(USER_ID_KEY, userId);
     }
 
     @Override
@@ -150,46 +191,6 @@ public class MainActivity extends AppCompatActivity {
         alertBuilder.create().show();
     }
 
-    private void getDatabase(){
-        mUserDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().getUserDAO();
-        mItemDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().getItemDAO();
-        mOrderDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().getOrderDAO();
-    }
-
-    private void checkForUser() {
-        //Do we have a user in the intent?
-        mUserId = getIntent().getIntExtra(USER_ID_KEY, -1);
-
-        //Do we have a user in the preferences?
-        if(mUserId != -1){
-            return;
-        }
-
-        if(mPreferences == null) {
-            getPrefs();
-        }
-        mUserId = mPreferences.getInt(USER_ID_KEY, -1);
-
-        if(mUserId != -1){
-            return;
-        }
-
-        //Do we have any users at all?
-        List<User> users = mUserDAO.getAllUsers();
-        if(users.size() <= 0){
-            User defaultUser = new User("testuser1","testuser1", false);
-            User admin = new User("admin2","admin2", true);
-            mUserDAO.insert(defaultUser,admin);
-        }
-
-        Intent intent = LoginActivity.getIntent(this);
-        startActivity(intent);
-    }
-
-    private void getPrefs() {
-        mPreferences = this.getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
-    }
-
     private void clearUserFromIntent(){
         getIntent().putExtra(USER_ID_KEY, -1);
     }
@@ -202,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
         mAdmin_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = AdminActivity.getIntent(getApplicationContext());
+                Intent intent = AdminActivity.getIntent(getApplicationContext(), mUser.getUserId());
                 startActivity(intent);
             }
         });
@@ -212,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
         mShop_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = ShopActivity.getIntent(getApplicationContext());
+                Intent intent = ShopActivity.getIntent(getApplicationContext(),mUser.getUserId());
                 startActivity(intent);
             }
         });
@@ -222,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
         mOrders_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = OrdersActivity.getIntent(getApplicationContext());
+                Intent intent = OrdersActivity.getIntent(getApplicationContext(), mUser.getUserId());
                 startActivity(intent);
             }
         });
@@ -246,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
     private void checkForItems(){
         List<Item> items = mItemDAO.getAllItems();
         if(items.size() <= 0){
-            Item item1 = new Item("Wall-E",100.00, 1, "Cleans the earth during an apocalypse.");
+            Item item1 = new Item("Wall-E",100.00, 2, "Cleans the earth during an apocalypse.");
             Item item2 = new Item("Cheeseburger Shake",100.00, 1, "Your favorite meal, in a cup!");
             Item item3 = new Item("Otto-Pilot Robot",100.00, 1, "Drives any spaceship autonomously, may lead a mutiny.");
             Item item4 = new Item("Lightning McQueen Race Car",100.00, 1, "Ka-Chow!");

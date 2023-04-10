@@ -5,6 +5,7 @@ import androidx.room.Room;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -25,13 +27,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UsersActivity extends AppCompatActivity {
-
+    private static final String USER_ID_KEY = "com.example.buynlarge.userIdKey";
+    private static final String PREFERENCES_KEY = "com.example.buynlarge.PREFERENCES_KEY";
+    private int mUserId = -1;
+    private User mUser;
+    private SharedPreferences mPreferences = null;
     ActivityUsersBinding mUsersBinding;
     private UserDAO mUserDAO;
     private List<User> mUserList;
     private TextView mUsersList_TextView;
     private Spinner mUserSpinner;
     private Button mDeleteUser_Button;
+    private ImageButton mBackButton;
     private ArrayAdapter<String> adapter;
 
     @Override
@@ -47,10 +54,62 @@ public class UsersActivity extends AppCompatActivity {
         mUsersList_TextView = mUsersBinding.usersListTextView;
         mUserSpinner = mUsersBinding.usersSpinner;
         mDeleteUser_Button = mUsersBinding.deleteUserButton;
+        mBackButton = mUsersBinding.backButton;
+
+        getDatabase();
+
+        checkForUser();
+
+        addUserToPreference(mUserId);
+
+        loginUser(mUserId);
 
         displayUsers();
 
         displayUsersSpinner();
+
+        pressBackButton();
+    }
+
+    private void getDatabase(){
+        mUserDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().getUserDAO();
+    }
+
+    private void checkForUser() {
+        //Do we have a user in the intent?
+        mUserId = getIntent().getIntExtra(USER_ID_KEY, -1);
+
+        //Do we have a user in the preferences?
+        if(mUserId != -1){
+            return;
+        }
+
+        if(mPreferences == null) {
+            getPrefs();
+        }
+        mUserId = mPreferences.getInt(USER_ID_KEY, -1);
+
+        if(mUserId != -1){
+            return;
+        }
+    }
+
+    private void addUserToPreference(int userId) {
+        if(mPreferences == null){
+            getPrefs();
+        }
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putInt(USER_ID_KEY, userId);
+    }
+
+    private void getPrefs() {
+        mPreferences = this.getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
+    }
+
+    private void loginUser(int userId) {
+        mUser = mUserDAO.getUserByUserId(userId);
+
+        invalidateOptionsMenu();
     }
 
     private void displayUsers(){
@@ -90,7 +149,7 @@ public class UsersActivity extends AppCompatActivity {
                         public void onClick(View v) {
                             mUserDAO.delete(user);
                             Toast.makeText(UsersActivity.this, "Deleted user: " + selectedUser, Toast.LENGTH_LONG).show();
-                            Intent intent = UsersActivity.getIntent(getApplicationContext());
+                            Intent intent = UsersActivity.getIntent(getApplicationContext(),mUser.getUserId());
                             startActivity(intent);
                         }
                     });
@@ -104,8 +163,21 @@ public class UsersActivity extends AppCompatActivity {
         }
     }
 
-    public static Intent getIntent(Context context){
+    private void pressBackButton() {
+        mBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("mUser: " + mUser);
+                Intent intent = AdminActivity.getIntent(getApplicationContext(),mUser.getUserId());
+                startActivity(intent);
+            }
+        });
+    }
+
+    public static Intent getIntent(Context context, int userId){
         Intent intent = new Intent(context, UsersActivity.class);
+        intent.putExtra(USER_ID_KEY, userId);
+
         return intent;
     }
 }

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.buynlarge.DB.AppDataBase;
@@ -22,6 +23,7 @@ public class CreateNewAccount extends AppCompatActivity {
     private EditText mNewUsername_edittext;
     private EditText mNewPassword_edittext;
     private Button mRegister_button;
+    private ImageButton mBackButton;
     private UserDAO mUserDAO;
     private int mUserId = -1;
 
@@ -40,14 +42,12 @@ public class CreateNewAccount extends AppCompatActivity {
         mNewUsername_edittext = mCreateBinding.newUsernameInput;
         mNewPassword_edittext = mCreateBinding.newPasswordInput;
         mRegister_button = mCreateBinding.newRegister;
+        mBackButton = mCreateBinding.backButton;
         mUserDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().getUserDAO();
 
-        mRegister_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                registerNewUser();
-            }
-        });
+        pressRegisterButton();
+
+        pressBackButton();
     }
 
     private void registerNewUser(){
@@ -60,6 +60,25 @@ public class CreateNewAccount extends AppCompatActivity {
         Toast.makeText(CreateNewAccount.this, "Account successfully created for: " + username, Toast.LENGTH_LONG).show();
         Intent intent = LoginActivity.getIntent(getApplicationContext());
         startActivity(intent);
+    }
+
+    private void pressRegisterButton(){
+        mRegister_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                registerNewUser();
+            }
+        });
+    }
+
+    private void pressBackButton() {
+        mBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = LoginActivity.getIntent(getApplicationContext());
+                startActivity(intent);
+            }
+        });
     }
 
     public static Intent getIntent(Context context){

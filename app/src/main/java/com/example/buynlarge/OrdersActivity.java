@@ -6,29 +6,40 @@ import androidx.room.Room;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.buynlarge.DB.AppDataBase;
 import com.example.buynlarge.DB.OrderDAO;
+import com.example.buynlarge.DB.UserDAO;
 import com.example.buynlarge.databinding.ActivityOrdersBinding;
 
 import java.util.List;
 
 public class OrdersActivity extends AppCompatActivity {
+
+    private static final String USER_ID_KEY = "com.example.buynlarge.userIdKey";
+    private static final String PREFERENCES_KEY = "com.example.buynlarge.PREFERENCES_KEY";
+    private UserDAO mUserDAO;
+    private int mUserId = -1;
+    private User mUser;
+    private SharedPreferences mPreferences = null;
     ActivityOrdersBinding mOrdersBinding;
     private OrderDAO mOrderDAO;
     private List<Order> mOrderList;
     private TextView mOrdersList_TextView;
     private Spinner mOrderSpinner;
     private Button mCancelOrder_Button;
+    private ImageButton mBackButton;
     private ArrayAdapter<String> adapter;
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
@@ -45,10 +56,62 @@ public class OrdersActivity extends AppCompatActivity {
         mOrdersList_TextView = mOrdersBinding.ordersListTextView;
         mOrderSpinner = mOrdersBinding.ordersSpinner;
         mCancelOrder_Button = mOrdersBinding.cancelOrderButton;
+        mBackButton = mOrdersBinding.backButton;
+
+        getDatabase();
+
+        checkForUser();
+
+        addUserToPreference(mUserId);
+
+        loginUser(mUserId);
 
         displayOrders();
 
         displayOrdersSpinner();
+
+        pressBackButton();
+    }
+
+    private void getDatabase(){
+        mUserDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().getUserDAO();
+    }
+
+    private void checkForUser() {
+        //Do we have a user in the intent?
+        mUserId = getIntent().getIntExtra(USER_ID_KEY, -1);
+
+        //Do we have a user in the preferences?
+        if(mUserId != -1){
+            return;
+        }
+
+        if(mPreferences == null) {
+            getPrefs();
+        }
+        mUserId = mPreferences.getInt(USER_ID_KEY, -1);
+
+        if(mUserId != -1){
+            return;
+        }
+    }
+
+    private void addUserToPreference(int userId) {
+        if(mPreferences == null){
+            getPrefs();
+        }
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putInt(USER_ID_KEY, userId);
+    }
+
+    private void getPrefs() {
+        mPreferences = this.getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
+    }
+
+    private void loginUser(int userId) {
+        mUser = mUserDAO.getUserByUserId(userId);
+
+        invalidateOptionsMenu();
     }
 
     private void displayOrders(){
@@ -88,7 +151,7 @@ public class OrdersActivity extends AppCompatActivity {
                         public void onClick(View v) {
                             mOrderDAO.delete(order);
                             Toast.makeText(OrdersActivity.this, "Cancelled Order: " + selectedOrder, Toast.LENGTH_LONG).show();
-                            Intent intent = OrdersActivity.getIntent(getApplicationContext());
+                            Intent intent = OrdersActivity.getIntent(getApplicationContext(), mUser.getUserId());
                             startActivity(intent);
                         }
                     });
@@ -102,8 +165,20 @@ public class OrdersActivity extends AppCompatActivity {
         }
     }
 
-    public static Intent getIntent(Context context){
+    private void pressBackButton() {
+        mBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = MainActivity.getIntent(getApplicationContext(),mUser.getUserId());
+                startActivity(intent);
+            }
+        });
+    }
+
+    public static Intent getIntent(Context context, int userId){
         Intent intent = new Intent(context, OrdersActivity.class);
+        intent.putExtra(USER_ID_KEY, userId);
+
         return intent;
     }
 }

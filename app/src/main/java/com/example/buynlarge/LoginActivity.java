@@ -50,13 +50,7 @@ public class LoginActivity extends AppCompatActivity {
 
         getDatabase();
 
-        mCreateNewAccount_textview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = CreateNewAccount.getIntent(getApplicationContext());
-                startActivity(intent);
-            }
-        });
+        createNewAccount();
     }
 
     private void wireUpDisplay(){
@@ -80,6 +74,20 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void getDatabase(){
+        mUserDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().getUserDAO();
+    }
+
+    private void createNewAccount(){
+        mCreateNewAccount_textview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = CreateNewAccount.getIntent(getApplicationContext());
+                startActivity(intent);
+            }
+        });
+    }
+
     private boolean validatePassword(){
         return mUser.getPassword().equals(mPassword);
     }
@@ -96,10 +104,6 @@ public class LoginActivity extends AppCompatActivity {
             return false;
         }
         return true;
-    }
-
-    private void getDatabase(){
-        mUserDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().getUserDAO();
     }
 
     public static Intent getIntent(Context context){
