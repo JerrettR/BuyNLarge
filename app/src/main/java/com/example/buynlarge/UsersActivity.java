@@ -1,6 +1,11 @@
 package com.example.buynlarge;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import android.content.Context;
@@ -34,12 +39,13 @@ public class UsersActivity extends AppCompatActivity {
     private SharedPreferences mPreferences = null;
     ActivityUsersBinding mUsersBinding;
     private UserDAO mUserDAO;
-    private List<User> mUserList;
+    private LiveData<List<User>> mUserList;
     private TextView mUsersList_TextView;
     private Spinner mUserSpinner;
     private Button mDeleteUser_Button;
     private ImageButton mBackButton;
     private ArrayAdapter<String> adapter;
+    private UserViewModel userViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +55,20 @@ public class UsersActivity extends AppCompatActivity {
         View view = mUsersBinding.getRoot();
         setContentView(view);
 
-        mUserDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().getUserDAO();
+        RecyclerView recyclerView = findViewById(R.id.users_recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
 
-        mUsersList_TextView = mUsersBinding.usersListTextView;
-        mUserSpinner = mUsersBinding.usersSpinner;
-        mDeleteUser_Button = mUsersBinding.deleteUserButton;
-        mBackButton = mUsersBinding.backButton;
+        UserAdapter adapter = new UserAdapter();
+        recyclerView.setAdapter(adapter);
+
+        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        userViewModel.getAllUsers().observe(this, new Observer<List<User>>() {
+            @Override
+            public void onChanged(List<User> users) {
+                adapter.setUsers(users);
+            }
+        });
 
         getDatabase();
 
@@ -63,10 +77,6 @@ public class UsersActivity extends AppCompatActivity {
         addUserToPreference(mUserId);
 
         loginUser(mUserId);
-
-        displayUsers();
-
-        displayUsersSpinner();
 
         pressBackButton();
     }
@@ -112,56 +122,56 @@ public class UsersActivity extends AppCompatActivity {
         invalidateOptionsMenu();
     }
 
-    private void displayUsers(){
-        StringBuilder sb = new StringBuilder();
-        for(User user : mUserDAO.getAllUsers()){
-            sb.append(user);
-        }
-        mUsersList_TextView.setText(sb);
-        mUsersList_TextView.setMovementMethod(new ScrollingMovementMethod());
-    }
-
-    private void displayUsersSpinner(){
-        mUserList = mUserDAO.getAllUsers();
-        System.out.println("mUserList" + mUserList);
-        if(! mUserList.isEmpty()){
-            ArrayAdapter<User> adapter = new ArrayAdapter<User>(this, android.R.layout.simple_expandable_list_item_1, mUserList);
-            adapter.setDropDownViewResource(android.R.layout.simple_expandable_list_item_1);
-            mUserSpinner.setAdapter(adapter);
-
-            mUserSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    String selectedUser = parent.getItemAtPosition(position).toString();
-
-                    String[] wordArray = selectedUser.trim().split("\\s+", 0);
-                    String word = "";
-                    for(int i=0; i<wordArray.length; i++) {
-                        word = wordArray[i];
-                        System.out.println("wordArray[" + i + "]: " + wordArray[i]);
-                    }
-                    Toast.makeText(parent.getContext(), "Selected: " + selectedUser, Toast.LENGTH_LONG).show();
-                    User user = mUserDAO.getUserByUsername(wordArray[4]);
-                    System.out.println("User: " + user);
-
-                    mDeleteUser_Button.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            mUserDAO.delete(user);
-                            Toast.makeText(UsersActivity.this, "Deleted user: " + selectedUser, Toast.LENGTH_LONG).show();
-                            Intent intent = UsersActivity.getIntent(getApplicationContext(),mUser.getUserId());
-                            startActivity(intent);
-                        }
-                    });
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
-        }
-    }
+//    private void displayUsers(){
+//        StringBuilder sb = new StringBuilder();
+//        for(User user : mUserDAO.getAllUsers()){
+//            sb.append(user);
+//        }
+//        mUsersList_TextView.setText(sb);
+//        mUsersList_TextView.setMovementMethod(new ScrollingMovementMethod());
+//    }
+//
+//    private void displayUsersSpinner(){
+//        mUserList = mUserDAO.getAllUsers();
+//        System.out.println("mUserList" + mUserList);
+//        if(! mUserList.isEmpty()){
+//            ArrayAdapter<User> adapter = new ArrayAdapter<User>(this, android.R.layout.simple_expandable_list_item_1, mUserList);
+//            adapter.setDropDownViewResource(android.R.layout.simple_expandable_list_item_1);
+//            mUserSpinner.setAdapter(adapter);
+//
+//            mUserSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//                @Override
+//                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                    String selectedUser = parent.getItemAtPosition(position).toString();
+//
+//                    String[] wordArray = selectedUser.trim().split("\\s+", 0);
+//                    String word = "";
+//                    for(int i=0; i<wordArray.length; i++) {
+//                        word = wordArray[i];
+//                        System.out.println("wordArray[" + i + "]: " + wordArray[i]);
+//                    }
+//                    Toast.makeText(parent.getContext(), "Selected: " + selectedUser, Toast.LENGTH_LONG).show();
+//                    User user = mUserDAO.getUserByUsername(wordArray[4]);
+//                    System.out.println("User: " + user);
+//
+//                    mDeleteUser_Button.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            mUserDAO.delete(user);
+//                            Toast.makeText(UsersActivity.this, "Deleted user: " + selectedUser, Toast.LENGTH_LONG).show();
+//                            Intent intent = UsersActivity.getIntent(getApplicationContext(),mUser.getUserId());
+//                            startActivity(intent);
+//                        }
+//                    });
+//                }
+//
+//                @Override
+//                public void onNothingSelected(AdapterView<?> parent) {
+//
+//                }
+//            });
+//        }
+//    }
 
     private void pressBackButton() {
         mBackButton.setOnClickListener(new View.OnClickListener() {

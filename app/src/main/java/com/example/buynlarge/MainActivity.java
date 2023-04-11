@@ -3,6 +3,7 @@ package com.example.buynlarge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.room.Room;
 
 import android.content.Context;
@@ -109,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //Do we have any users at all?
-        List<User> users = mUserDAO.getAllUsers();
+        List<User> users = mUserDAO.allUsers();
         if(users.size() <= 0){
             User defaultUser = new User("testuser1","testuser1", false);
             User admin = new User("admin2","admin2", true);

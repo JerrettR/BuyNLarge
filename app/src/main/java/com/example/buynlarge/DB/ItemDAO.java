@@ -1,5 +1,6 @@
 package com.example.buynlarge.DB;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -30,9 +31,6 @@ public interface ItemDAO {
 
     @Query("SELECT * FROM " + AppDataBase.ITEM_TABLE + " ORDER BY mItemId")
     List<Item> getAllItems();
-
-//    @Query("SELECT mItemName FROM " + AppDataBase.ITEM_TABLE + " ORDER BY mItemId")
-//    List<Item> getAllItemNames();
 
     @Query("SELECT * FROM " + AppDataBase.ITEM_TABLE + " WHERE mItemName = :itemName")
     Item getItemByItemName(String itemName);

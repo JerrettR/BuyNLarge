@@ -1,5 +1,6 @@
 package com.example.buynlarge.DB;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -24,7 +25,10 @@ public interface UserDAO {
     List<User> getUserLogs();
 
     @Query("SELECT * FROM " + AppDataBase.USER_TABLE + " ORDER BY mUserId")
-    List<User> getAllUsers();
+    LiveData<List<User>> getAllUsers();
+
+    @Query("SELECT * FROM " + AppDataBase.USER_TABLE + " ORDER BY mUserId")
+    List<User> allUsers();
 
     @Query("SELECT * FROM " + AppDataBase.USER_TABLE + " WHERE mUsername = :username")
     User getUserByUsername(String username);
@@ -34,4 +38,7 @@ public interface UserDAO {
 
     @Query("SELECT * FROM " + AppDataBase.USER_TABLE + " WHERE mIsAdmin = :isAdmin")
     User getIsAdmin(int isAdmin);
+
+    @Query("SELECT COUNT(*) FROM USER_TABLE")
+    LiveData<Integer> getRowCount();
 }
