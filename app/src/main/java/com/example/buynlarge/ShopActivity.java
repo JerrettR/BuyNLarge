@@ -130,17 +130,22 @@ public class ShopActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 try {
                     Item item = mItemDAO.getItemByItemName(query);
-                    mSearchResults.setText("Item Name: " + item.getItemName() + "\n" +
-                            "Price: " + String.format("%,.2f", item.getPrice()) + "\n" +
-                            "Qty In Stock: " + item.getQuantity() + "\n" +
-                            "Description: " + item.getDescription());
+                    if(item.getQuantity() <= 0){
+                        mSearchResults.setText("Item is out of stock!");
+                        mBuy_Button.setClickable(false);
+                    } else {
+                        mSearchResults.setText("Item Name: " + item.getItemName() + "\n" +
+                                "Price: " + String.format("%,.2f", item.getPrice()) + "\n" +
+                                "Qty In Stock: " + item.getQuantity() + "\n" +
+                                "Description: " + item.getDescription());
 
-                    String itemName = item.getItemName();
-                    double itemTotal = item.getPrice();
-                    String username = mUser.getUsername();
-                    System.out.println("username: " + username);
-                    if (item != null) {
-                        buyItem(item, itemName, itemTotal, username);
+                        String itemName = item.getItemName();
+                        double itemTotal = item.getPrice();
+                        String username = mUser.getUsername();
+                        System.out.println("username: " + username);
+                        if (item != null) {
+                            buyItem(item, itemName, itemTotal, username);
+                        }
                     }
                     return false;
                 } catch (Exception e){
