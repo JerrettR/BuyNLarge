@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.buynlarge.DB.AppDataBase;
+import com.example.buynlarge.DB.ItemDAO;
 import com.example.buynlarge.DB.OrderDAO;
 import com.example.buynlarge.DB.UserDAO;
 import com.example.buynlarge.databinding.ActivityOrdersBinding;
@@ -35,6 +36,7 @@ public class OrdersActivity extends AppCompatActivity {
     private SharedPreferences mPreferences = null;
     ActivityOrdersBinding mOrdersBinding;
     private OrderDAO mOrderDAO;
+    private ItemDAO mItemDAO;
     private List<Order> mOrderList;
     private TextView mOrdersList_TextView;
     private Spinner mOrderSpinner;
@@ -75,6 +77,7 @@ public class OrdersActivity extends AppCompatActivity {
 
     private void getDatabase(){
         mUserDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().getUserDAO();
+        mItemDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME).allowMainThreadQueries().build().getItemDAO();
     }
 
     private void checkForUser() {
@@ -152,6 +155,14 @@ public class OrdersActivity extends AppCompatActivity {
                         System.out.println("wordArray1[0]: " + wordArray1[0]);
                         System.out.println("wordArray1[1]: " + wordArray1[1]);
 
+                        String[] wordArray2 = wordArray1[1].trim().split("Total Price: ", 0);
+                        wordArray2[0] = wordArray2[0].replaceAll("[\n]", "");
+                        Item item = mItemDAO.getItemByItemName(wordArray2[0]);
+
+                        System.out.println("wordArray2[0]: " + wordArray2[0]);
+                        System.out.println("wordArray2[1]: " + wordArray2[1]);
+                        System.out.println("item: " + item);
+
                         int orderId = Integer.parseInt(wordArray1[0].trim());
                         System.out.println("orderId: " + orderId);
                         Toast.makeText(parent.getContext(), "Selected: " + selectedOrder, Toast.LENGTH_LONG).show();
@@ -162,6 +173,8 @@ public class OrdersActivity extends AppCompatActivity {
                             public void onClick(View v) {
                                 mOrderDAO.delete(order);
                                 Toast.makeText(OrdersActivity.this, "Cancelled Order: " + selectedOrder, Toast.LENGTH_LONG).show();
+                                item.setQuantity(item.getQuantity()+1);
+                                mItemDAO.update(item);
                                 Intent intent = OrdersActivity.getIntent(getApplicationContext(), mUser.getUserId());
                                 startActivity(intent);
                             }
@@ -192,6 +205,14 @@ public class OrdersActivity extends AppCompatActivity {
                         System.out.println("wordArray1[0]: " + wordArray1[0]);
                         System.out.println("wordArray1[1]: " + wordArray1[1]);
 
+                        String[] wordArray2 = wordArray1[1].trim().split("Total Price: ", 0);
+                        wordArray2[0] = wordArray2[0].replaceAll("[\n]", "");
+                        Item item = mItemDAO.getItemByItemName(wordArray2[0]);
+
+                        System.out.println("wordArray2[0]: " + wordArray2[0]);
+                        System.out.println("wordArray2[1]: " + wordArray2[1]);
+                        System.out.println("item: " + item);
+
                         int orderId = Integer.parseInt(wordArray1[0].trim());
                         System.out.println("orderId: " + orderId);
                         Toast.makeText(parent.getContext(), "Selected: " + selectedOrder, Toast.LENGTH_LONG).show();
@@ -202,6 +223,8 @@ public class OrdersActivity extends AppCompatActivity {
                             public void onClick(View v) {
                                 mOrderDAO.delete(order);
                                 Toast.makeText(OrdersActivity.this, "Cancelled Order: " + selectedOrder, Toast.LENGTH_LONG).show();
+                                item.setQuantity(item.getQuantity()+1);
+                                mItemDAO.update(item);
                                 Intent intent = OrdersActivity.getIntent(getApplicationContext(), mUser.getUserId());
                                 startActivity(intent);
                             }
