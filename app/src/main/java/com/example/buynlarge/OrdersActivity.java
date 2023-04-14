@@ -134,44 +134,86 @@ public class OrdersActivity extends AppCompatActivity {
     }
 
     private void displayOrdersSpinner(){
-        mOrderList = mOrderDAO.getAllOrders();
-        if(! mOrderList.isEmpty()){
-            ArrayAdapter<Order> adapter = new ArrayAdapter<Order>(this, android.R.layout.simple_expandable_list_item_1, mOrderList);
-            adapter.setDropDownViewResource(android.R.layout.simple_expandable_list_item_1);
-            mOrderSpinner.setAdapter(adapter);
+        if(mUser.isAdmin()) {
+            mOrderList = mOrderDAO.getAllOrders();
+            if (!mOrderList.isEmpty()) {
+                ArrayAdapter<Order> adapter = new ArrayAdapter<Order>(this, android.R.layout.simple_expandable_list_item_1, mOrderList);
+                adapter.setDropDownViewResource(android.R.layout.simple_expandable_list_item_1);
+                mOrderSpinner.setAdapter(adapter);
 
-            mOrderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    String selectedOrder = parent.getItemAtPosition(position).toString();
+                mOrderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        String selectedOrder = parent.getItemAtPosition(position).toString();
 
-                    String[] wordArray = selectedOrder.trim().split("Order ID: ", 0);
-                    String[] wordArray1 = wordArray[1].trim().split("Item Name: ", 0);
+                        String[] wordArray = selectedOrder.trim().split("Order ID: ", 0);
+                        String[] wordArray1 = wordArray[1].trim().split("Item Name: ", 0);
 
-                    System.out.println("wordArray1[0]: " + wordArray1[0]);
-                    System.out.println("wordArray1[1]: " + wordArray1[1]);
+                        System.out.println("wordArray1[0]: " + wordArray1[0]);
+                        System.out.println("wordArray1[1]: " + wordArray1[1]);
 
-                    int orderId = Integer.parseInt(wordArray1[0].trim());
-                    System.out.println("orderId: " + orderId);
-                    Toast.makeText(parent.getContext(), "Selected: " + selectedOrder, Toast.LENGTH_LONG).show();
-                    Order order = mOrderDAO.getOrderById(orderId);
+                        int orderId = Integer.parseInt(wordArray1[0].trim());
+                        System.out.println("orderId: " + orderId);
+                        Toast.makeText(parent.getContext(), "Selected: " + selectedOrder, Toast.LENGTH_LONG).show();
+                        Order order = mOrderDAO.getOrderById(orderId);
 
-                    mCancelOrder_Button.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            mOrderDAO.delete(order);
-                            Toast.makeText(OrdersActivity.this, "Cancelled Order: " + selectedOrder, Toast.LENGTH_LONG).show();
-                            Intent intent = OrdersActivity.getIntent(getApplicationContext(), mUser.getUserId());
-                            startActivity(intent);
-                        }
-                    });
-                }
+                        mCancelOrder_Button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mOrderDAO.delete(order);
+                                Toast.makeText(OrdersActivity.this, "Cancelled Order: " + selectedOrder, Toast.LENGTH_LONG).show();
+                                Intent intent = OrdersActivity.getIntent(getApplicationContext(), mUser.getUserId());
+                                startActivity(intent);
+                            }
+                        });
+                    }
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
 
-                }
-            });
+                    }
+                });
+            }
+        } else {
+            mOrderList = mOrderDAO.getUserOrdersByUsername(mUser.toString());
+            if (!mOrderList.isEmpty()) {
+                ArrayAdapter<Order> adapter = new ArrayAdapter<Order>(this, android.R.layout.simple_expandable_list_item_1, mOrderList);
+                adapter.setDropDownViewResource(android.R.layout.simple_expandable_list_item_1);
+                mOrderSpinner.setAdapter(adapter);
+
+                mOrderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        String selectedOrder = parent.getItemAtPosition(position).toString();
+
+                        String[] wordArray = selectedOrder.trim().split("Order ID: ", 0);
+                        String[] wordArray1 = wordArray[1].trim().split("Item Name: ", 0);
+
+                        System.out.println("wordArray1[0]: " + wordArray1[0]);
+                        System.out.println("wordArray1[1]: " + wordArray1[1]);
+
+                        int orderId = Integer.parseInt(wordArray1[0].trim());
+                        System.out.println("orderId: " + orderId);
+                        Toast.makeText(parent.getContext(), "Selected: " + selectedOrder, Toast.LENGTH_LONG).show();
+                        Order order = mOrderDAO.getOrderById(orderId);
+
+                        mCancelOrder_Button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mOrderDAO.delete(order);
+                                Toast.makeText(OrdersActivity.this, "Cancelled Order: " + selectedOrder, Toast.LENGTH_LONG).show();
+                                Intent intent = OrdersActivity.getIntent(getApplicationContext(), mUser.getUserId());
+                                startActivity(intent);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+            }
         }
     }
 
