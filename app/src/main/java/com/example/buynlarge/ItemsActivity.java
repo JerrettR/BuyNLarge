@@ -119,7 +119,7 @@ public class ItemsActivity extends AppCompatActivity {
 
     private void displayItems(){
         StringBuilder sb = new StringBuilder();
-        for(Item item : mItemDAO.getAllItems()){
+        for(Item item : mItemDAO.getAllItemsAboveZero()){
             sb.append(item);
         }
         mItemsList_TextView.setText(sb);
@@ -127,13 +127,7 @@ public class ItemsActivity extends AppCompatActivity {
     }
 
     private void displayItemsSpinner(){
-        mItemList = mItemDAO.getAllItems();
-        for(Item item : mItemList){
-            if(item.getQuantity() < 1){
-                mItemDAO.delete(item);
-                mItemList = mItemDAO.getAllItems();
-            }
-        }
+        mItemList = mItemDAO.getAllItemsAboveZero();
         if(! mItemList.isEmpty()){
             ArrayAdapter<Item> adapter = new ArrayAdapter<Item>(this, android.R.layout.simple_expandable_list_item_1, mItemList);
             adapter.setDropDownViewResource(android.R.layout.simple_expandable_list_item_1);

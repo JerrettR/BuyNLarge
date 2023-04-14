@@ -31,6 +31,9 @@ public interface ItemDAO {
     @Query("SELECT * FROM " + AppDataBase.ITEM_TABLE + " ORDER BY mItemId")
     List<Item> getAllItems();
 
+    @Query("SELECT * FROM " + AppDataBase.ITEM_TABLE + " WHERE mQuantity > 0 ORDER BY mItemId")
+    List<Item> getAllItemsAboveZero();
+
 //    @Query("SELECT mItemName FROM " + AppDataBase.ITEM_TABLE + " ORDER BY mItemId")
 //    List<Item> getAllItemNames();
 

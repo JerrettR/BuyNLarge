@@ -223,8 +223,13 @@ public class OrdersActivity extends AppCompatActivity {
                             public void onClick(View v) {
                                 mOrderDAO.delete(order);
                                 Toast.makeText(OrdersActivity.this, "Cancelled Order: " + selectedOrder, Toast.LENGTH_LONG).show();
-                                item.setQuantity(item.getQuantity()+1);
-                                mItemDAO.update(item);
+                                if(item.getQuantity() <= 0){
+                                    item.setQuantity(1);
+                                    mItemDAO.update(item);
+                                } else {
+                                    item.setQuantity(item.getQuantity() + 1);
+                                    mItemDAO.update(item);
+                                }
                                 Intent intent = OrdersActivity.getIntent(getApplicationContext(), mUser.getUserId());
                                 startActivity(intent);
                             }

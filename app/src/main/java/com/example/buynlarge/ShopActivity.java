@@ -128,20 +128,25 @@ public class ShopActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Item item = mItemDAO.getItemByItemName(query);
-                mSearchResults.setText("Item Name: " + item.getItemName() + "\n" +
-                                       "Price: " + String.format("%,.2f",item.getPrice()) + "\n" +
-                                       "Qty In Stock: " + item.getQuantity() + "\n" +
-                                       "Description: " + item.getDescription());
+                try {
+                    Item item = mItemDAO.getItemByItemName(query);
+                    mSearchResults.setText("Item Name: " + item.getItemName() + "\n" +
+                            "Price: " + String.format("%,.2f", item.getPrice()) + "\n" +
+                            "Qty In Stock: " + item.getQuantity() + "\n" +
+                            "Description: " + item.getDescription());
 
-                String itemName = item.getItemName();
-                double itemTotal = item.getPrice();
-                String username = mUser.getUsername();
-                System.out.println("username: " + username);
-                if(item != null){
-                    buyItem(item,itemName,itemTotal,username);
+                    String itemName = item.getItemName();
+                    double itemTotal = item.getPrice();
+                    String username = mUser.getUsername();
+                    System.out.println("username: " + username);
+                    if (item != null) {
+                        buyItem(item, itemName, itemTotal, username);
+                    }
+                    return false;
+                } catch (Exception e){
+                    Toast.makeText(ShopActivity.this, "Item is out of stock or does not exist: " + query, Toast.LENGTH_LONG).show();
+                    return false;
                 }
-                return false;
             }
 
             @Override
