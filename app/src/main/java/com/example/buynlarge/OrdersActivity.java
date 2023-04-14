@@ -175,7 +175,7 @@ public class OrdersActivity extends AppCompatActivity {
                 });
             }
         } else {
-            mOrderList = mOrderDAO.getUserOrdersByUsername(mUser.toString());
+            mOrderList = mOrderDAO.getUserOrdersByUsername(mUser.getUsername());
             if (!mOrderList.isEmpty()) {
                 ArrayAdapter<Order> adapter = new ArrayAdapter<Order>(this, android.R.layout.simple_expandable_list_item_1, mOrderList);
                 adapter.setDropDownViewResource(android.R.layout.simple_expandable_list_item_1);
