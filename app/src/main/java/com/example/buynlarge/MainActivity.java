@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
         checkForItems();
 
-        checkForOrders();
+//        checkForOrders();
 
         pressAdminButton();
 
@@ -247,10 +247,10 @@ public class MainActivity extends AppCompatActivity {
     private void checkForItems(){
         List<Item> items = mItemDAO.getAllItems();
         if(items.size() <= 0){
-            Item item1 = new Item("Wall-E",100.00, 2, "Cleans the earth during an apocalypse.");
-            Item item2 = new Item("Cheeseburger Shake",100.00, 1, "Your favorite meal, in a cup!");
-            Item item3 = new Item("Otto-Pilot Robot",100.00, 1, "Drives any spaceship autonomously, may lead a mutiny.");
-            Item item4 = new Item("Lightning McQueen Race Car",100.00, 1, "Ka-Chow!");
+            Item item1 = new Item("Wall-E",2000.00, 2, "Cleans the earth during an apocalypse.");
+            Item item2 = new Item("Cheeseburger-In-A-Cup",10.00, 1, "Your favorite meal, in a cup!");
+            Item item3 = new Item("Otto-Pilot Robot",600.00, 1, "Drives any spaceship autonomously. Not responsible for mutiny.");
+            Item item4 = new Item("Lightning McQueen Race Car",45999.00, 1, "Ka-Chow!");
             mItemDAO.insert(item1,item2,item3,item4);
         }
     }
