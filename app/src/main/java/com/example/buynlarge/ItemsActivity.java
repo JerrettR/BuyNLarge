@@ -120,7 +120,11 @@ public class ItemsActivity extends AppCompatActivity {
     private void displayItems(){
         StringBuilder sb = new StringBuilder();
         for(Item item : mItemDAO.getAllItemsAboveZero()){
-            sb.append(item);
+            sb.append("Item Name: " + item.getItemName() + "\n" +
+                    "Price: $" + String.format("%,.2f", item.getPrice()) + "\n" +
+                    "Qty In Stock: " + item.getQuantity() + "\n" +
+                    "Description: " + item.getDescription()  + "\n" +
+                    "_____________________________________________\n");
         }
         mItemsList_TextView.setText(sb);
         mItemsList_TextView.setMovementMethod(new ScrollingMovementMethod());

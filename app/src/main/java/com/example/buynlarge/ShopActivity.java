@@ -135,7 +135,7 @@ public class ShopActivity extends AppCompatActivity {
                         mBuy_Button.setClickable(false);
                     } else {
                         mSearchResults.setText("Item Name: " + item.getItemName() + "\n" +
-                                "Price: " + String.format("%,.2f", item.getPrice()) + "\n" +
+                                "Price: $" + String.format("%,.2f", item.getPrice()) + "\n" +
                                 "Qty In Stock: " + item.getQuantity() + "\n" +
                                 "Description: " + item.getDescription());
 
